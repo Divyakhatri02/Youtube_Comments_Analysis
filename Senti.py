@@ -139,4 +139,3 @@ def print_sentiment(csv_file: str) -> None:
     print('\n'+ Style.BRIGHT+ color + overall_sentiment.upper().center(50, ' ') + Style.RESET_ALL)
 
 
-
