@@ -132,4 +132,8 @@ if youtube_link:
 
     except Exception as e:
         st.error("⚠️ An unexpected error occurred while processing the video.")
+<<<<<<< HEAD
         st.exception(e)
+=======
+        st.exception(e)
+>>>>>>> 898096e (project completion)

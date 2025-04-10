@@ -1,0 +1,68 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# VSCode settings
+.vscode/
+
+# macOS / Windows system files
+.DS_Store
+Thumbs.db
+
+# Python cache
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Secret credentials
+.secrets.toml
+secrets.toml
+
+# Streamlit static and temp files
+.streamlit/
+*.csv
+*.xlsx
+
+# Token cache
+token.pickle
+
+# Environment variable files
+.env
+.env.*
+
+# PyInstaller
+*.spec
+dist/
+build/
+
+# Ignore compiled binaries
+*.so
+
+# Ignore test results
+htmlcov/
+coverage.xml
+*.cover
+*.py,cover
+.cache
+nosetests.xml
+test-output/
+junit.xml
+
+# Ignore output and generated files
+output/
+*.zip
+*.tar.gz
+*.egg-info/
+ 
