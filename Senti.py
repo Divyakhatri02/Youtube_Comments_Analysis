@@ -109,13 +109,9 @@ def create_scatterplot(csv_file: str, x_column: str, y_column: str) -> None:
         font=dict(size=18)
     )
 
-    # Display plot in Streamlit
-    st.plotly_chart(fig, use_container_width=True)
-    
-    
     
 def print_sentiment(csv_file: str) -> None:
-    # Call analyze_sentiment function to get the results
+    # Call analyze_sentiment function to get the esults
     results: Dict[str, int] = analyze_sentiment(csv_file)
 
     # Get the counts for each sentiment category

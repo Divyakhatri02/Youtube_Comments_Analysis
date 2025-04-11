@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import time
 from Senti import extract_video_id, analyze_sentiment, bar_chart, plot_sentiment
 from YoutubeCommentScrapper import save_video_comments_to_csv, get_channel_info, youtube, get_channel_id, get_video_stats
 
@@ -13,22 +14,24 @@ def delete_non_matching_csv_files(directory_path, video_id):
         os.remove(os.path.join(directory_path, file_name))
 
 
-st.set_page_config(page_title='Divya Khatrii', page_icon='LOGO.png', initial_sidebar_state='auto')
+st.set_page_config(page_title='Divya Khatrii', page_icon='app_logo.png', initial_sidebar_state='auto')
 st.sidebar.title("Sentimental Analysis")
 st.sidebar.header("Enter YouTube Link")
 youtube_link = st.sidebar.text_input("Link")
+submit_button = st.sidebar.button("Submit")
+
 directory_path = os.getcwd()
 
 # 🎨 Custom CSS
 custom_css = """
 <style>
 [data-testid="stAppViewContainer"] {
-    background: radial-gradient(circle at top left, #fbc2eb 0%, #a6c1ee 100%);
-    background-attachment: fixed;
+    background: #ffffff;
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(252, 232, 232, 1) 70%);
 }
 [data-testid="stSidebar"] {
-    background: linear-gradient(to bottom, #dbeafe, #e0f2fe);
-    color: #000000;
+    background: #dedeff;
+    background: radial-gradient(circle, rgba(222, 222, 255, 1) 0%, rgba(250, 220, 220, 1) 34%);
     font-weight: 600;
 }
 #MainMenu {visibility: hidden;}
@@ -47,31 +50,49 @@ h1, h2, h3, h4, h5, h6 {
 """
 st.markdown(custom_css, unsafe_allow_html=True)
 
-if youtube_link:
+if youtube_link and submit_button:
     try:
-        with st.spinner("🔍 Processing your YouTube link..."):
-            video_id = extract_video_id(youtube_link)
-            if not video_id:
-                st.sidebar.error("❌ Could not extract video ID from the link.")
-                st.stop()
+        # 🍪 Cute baking animation
+        loading_box = st.empty()
+        emojis = ["🍪", "🍩", "🧁", "🎂", "🍰", "🍕"]
+        message = "Baking your link, please wait"
 
-            channel_id = get_channel_id(video_id)
-            if not channel_id:
-                st.sidebar.error("❌ Could not fetch channel ID.")
-                st.stop()
+        for i in range(12):  # ~6 seconds total
+            emoji = emojis[i % len(emojis)]
+            loading_html = f"""
+            <div style="text-align:center; padding-top: 100px;">
+                <div style="font-size: 80px;">{emoji}</div>
+                <div style="font-size: 24px; font-weight: bold;">{message}</div>
+            </div>
+            """
+            loading_box.markdown(loading_html, unsafe_allow_html=True)
+            time.sleep(0.5)
 
-            csv_file = save_video_comments_to_csv(video_id)
-            delete_non_matching_csv_files(directory_path, video_id)
-            st.sidebar.success("✅ Comments saved to CSV!")
-            st.sidebar.download_button(
-                label="Download Comments",
-                data=open(csv_file, 'rb').read(),
-                file_name=os.path.basename(csv_file),
-                mime="text/csv"
-            )
+        loading_box.empty()
 
-            # Fetching Channel Info
-            channel_info = get_channel_info(youtube, channel_id)
+        # 🎯 Start processing after animation
+        video_id = extract_video_id(youtube_link)
+        if not video_id:
+            st.sidebar.error("❌ Could not extract video ID from the link.")
+            st.stop()
+
+        channel_id = get_channel_id(video_id)
+        if not channel_id:
+            st.sidebar.error("❌ Could not fetch channel ID.")
+            st.stop()
+
+        csv_file = save_video_comments_to_csv(video_id)
+        delete_non_matching_csv_files(directory_path, video_id)
+        st.sidebar.success("✅ Comments saved to CSV!")
+        st.sidebar.download_button(
+            label="Download Comments",
+            data=open(csv_file, 'rb').read(),
+            file_name=os.path.basename(csv_file),
+            mime="text/csv"
+        )
+
+        # Fetching Channel Info
+        channel_info = get_channel_info(youtube, channel_id)
 
         col1, col2 = st.columns(2)
         with col1:
@@ -132,8 +153,4 @@ if youtube_link:
 
     except Exception as e:
         st.error("⚠️ An unexpected error occurred while processing the video.")
-<<<<<<< HEAD
         st.exception(e)
-=======
-        st.exception(e)
->>>>>>> 898096e (project completion)
