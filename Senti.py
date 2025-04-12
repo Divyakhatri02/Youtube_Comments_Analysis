@@ -135,3 +135,16 @@ def print_sentiment(csv_file: str) -> None:
     print('\n'+ Style.BRIGHT+ color + overall_sentiment.upper().center(50, ' ') + Style.RESET_ALL)
 
 
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+
+def show_wordcloud(csv_file: str) -> None:
+    data = pd.read_csv(csv_file)
+    comments = ' '.join(data['Comment'].astype(str))
+
+    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(comments)
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.imshow(wordcloud, interpolation='bilinear')
+    ax.axis('off')
+    st.pyplot(fig)

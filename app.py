@@ -1,9 +1,8 @@
 import streamlit as st
 import os
 import time
-from Senti import extract_video_id, analyze_sentiment, bar_chart, plot_sentiment
+from Senti import extract_video_id, analyze_sentiment, bar_chart, plot_sentiment, show_wordcloud
 from YoutubeCommentScrapper import save_video_comments_to_csv, get_channel_info, youtube, get_channel_id, get_video_stats
-
 
 def delete_non_matching_csv_files(directory_path, video_id):
     for file_name in os.listdir(directory_path):
@@ -148,6 +147,11 @@ if youtube_link and submit_button:
         bar_chart(csv_file)
         plot_sentiment(csv_file)
 
+
+        st.title("Sentiment Word Cloud Viewer")
+        show_wordcloud(csv_file)
+        
+        
         st.subheader("Channel Description")
         st.write(channel_info['channel_description'])
 
